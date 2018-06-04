@@ -15,6 +15,8 @@ class PostsController extends Controller
     public function index()
     {
         //
+        $posts = Post::all()->sortByDesc('created_at');
+        return view('posts.index', compact('posts'));
     }
 
     /**
@@ -24,7 +26,8 @@ class PostsController extends Controller
      */
     public function create()
     {
-        //
+        $post = new Post();
+        return view('posts.create',compact('post'));
     }
 
     /**
@@ -35,7 +38,8 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $post = Post::create($request->all());
+        return redirect()->route('posts.show', [$post->id]);
     }
 
     /**
@@ -46,7 +50,7 @@ class PostsController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return view('posts.show', compact('post'));
     }
 
     /**
@@ -57,7 +61,7 @@ class PostsController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view('posts.edit', compact('post'));
     }
 
     /**
@@ -69,7 +73,8 @@ class PostsController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $post->update($request->all());
+        return redirect()->route('posts.show', [$post->id]);
     }
 
     /**
