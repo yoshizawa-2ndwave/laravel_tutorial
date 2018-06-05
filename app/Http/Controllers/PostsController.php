@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use Illuminate\Http\Request;
+use App\Http\Requests\validationPost;
 
 class PostsController extends Controller
 {
@@ -33,10 +34,10 @@ class PostsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  validationPost  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(validationPost $request)
     {
         $post = Post::create($request->all());
         return redirect()->route('posts.show', [$post->id]);
@@ -67,11 +68,11 @@ class PostsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  validationPost  $request
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(validationPost $request, Post $post)
     {
         $post->update($request->all());
         return redirect()->route('posts.show', [$post->id]);

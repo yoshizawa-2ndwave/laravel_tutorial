@@ -8,13 +8,9 @@
 @endsection
 
 @section('content')
-{{ Form::open( ['route' =>'posts.store']) }}
+<div class="">
+    {{ Form::open( ['route' =>'posts.store']) }}
+    @include('posts.form')
+    {{ Form::close() }}
 <div>
-    {{ Form::text('title', $post->title) }}
-</div>
-<div>
-    {{ Form::textarea('content', $post->content) }}
-</div>
-{{ Form::submit('create') }}
-{{ Form::close() }}
 @endsection
