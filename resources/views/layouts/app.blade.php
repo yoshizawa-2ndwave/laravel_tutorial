@@ -1,37 +1,34 @@
 <!DOCTYPE html>
 <head>
-<!--
 <link rel="stylesheet" href="/css/app.css" type="text/css"/>
--->
-<style>
-.sidebar {
-    width:100px;
-    margin:10px;
-    float:left;
-}
-.button-rapper {
-    padding-left: 120px;
-}
-table {
-    width: 500px;
-    th, td {
-        margin: 10px;
-        padding: 10px;
-    }
-}
-</style>
 </head>
 <html>
     <head>
         <title>Blog @yield('title')</title>
     </head>
     <body>
-        <div class="sidebar">
+        <div class="col-xs-2">
+            <div class="sidebar-nav">
             @section('sidebar')
-            <p>メニュー</p>
-            @show
+            <ul class="nav">
+                @if(Route::has('login'))
+                    @auth
+                <li>
+                {{ link_to_route('logout','ログアウト', [], ['onclick' => 'event.preventDefault();document.getElementById("logout-form").submit();'])}}
+                {{ Form::open( ['route' =>['logout'],'method'=>'post', 'id'=>'logout-form' ,'style' => 'dysplay:none;']) }}
+                {{ Form::close() }}
+                </li>
+                    @else
+                <li>{{ link_to_route('login','ログイン')}}</li>
+                <li>{{ link_to_route('register','登録')}}</li>
+                    @endauth
+                @endif
+                <li>{{ link_to_route('posts.index', '記事一覧')}}</il>
+                @show
+            </ul>
         </div>
-        <div class="container">
+        </div>
+        <div class="container col-xs-10">
             @yield('content')
         </div>
     </body>

@@ -2,10 +2,12 @@
 @section('title', '記事一覧')
 @section('sidebar')
     @parent
-    {{ link_to_route('posts.create', '作成')}}
+    @if(Auth::check())
+    <li>{{ link_to_route('posts.create', '記事作成')}}</li>
+    @endif
 @endsection
 @section('content')
-<table>
+<table class="table">
     <tr>
         <th>タイトル</th>
         <th>作成日時</th>
@@ -19,7 +21,7 @@
         <td>{{ link_to_route('posts.edit', '編集', [$post->id])}}</td>
         <td>
             {{ Form::open( ['route' =>['posts.destroy', $post->id],'onSubmit'=> 'return disp();','method'=>'delete']) }}
-            {{ Form::submit('削除') }}
+            {{ Form::submit('削除', ['class' => 'btn btn-danger', 'disabled' => !Auth::check() ]) }}
             {{ Form::close() }}
         </td>
     </tr>

@@ -69,14 +69,11 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        {{ Form::open( ['route' =>['logout'],'method'=>'post', 'id'=>'logout-form' ,'style' => 'dysplay:none;']) }}{{ Form::close() }}
                         <a href="{{ url('/home') }}">Home</a>
-                        {{ link_to_route('logout','logout', [], ['onclick' => 'event.preventDefault();document.getElementById("logout-form").submit();'])}}
                     @else
                         <a href="{{ route('login') }}">Login</a>
                         <a href="{{ route('register') }}">Register</a>
                     @endauth
-                        <a href="{{ url('/posts') }}">posts</a>
                 </div>
             @endif
 

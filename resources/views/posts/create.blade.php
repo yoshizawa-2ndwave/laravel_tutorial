@@ -1,16 +1,10 @@
 @extends('layouts.app')
-
-@section('title', 'create')
-
+@section('title', '記事作成')
 @section('sidebar')
     @parent
-    {{ link_to_route('posts.index', 'back')}}
 @endsection
-
 @section('content')
-<div class="">
     {{ Form::open( ['route' =>'posts.store']) }}
-    @include('posts.form')
+    @include('form.postForm')
     {{ Form::close() }}
-<div>
 @endsection

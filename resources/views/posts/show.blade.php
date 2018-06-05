@@ -4,13 +4,13 @@
 
 @section('sidebar')
     @parent
-    {{ link_to_route('posts.index', 'back')}}
-    <td>{{ link_to_route('posts.edit', 'Edit', [$post->id])}}</td>
+    <li>{{ link_to_route('posts.edit', '記事修正', [$post->id])}}</li>
 @endsection
 
 @section('content')
 
-<h1>{{ $post->title }}</h1>
-<p>{{ $post->content }}</p>
-
+<div >
+    <h1 class="title">{{ $post->title }}</h1>
+    <p>{{ $post->content }}</p>
+</div>
 @endsection
