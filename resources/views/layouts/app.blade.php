@@ -7,7 +7,10 @@
         <title>Blog @yield('title')</title>
     </head>
     <body>
-        <div class="col-xs-2">
+        <div class="container">
+        <p>blog</p>
+        </div>
+        <div class="col-xs-3">
             <div class="sidebar-nav">
             @section('sidebar')
             <ul class="nav">
@@ -26,9 +29,20 @@
                 <li>{{ link_to_route('posts.index', '記事一覧')}}</il>
                 @show
             </ul>
+            {{ Form::open(['route'=> 'posts.index', 'method' => 'get']) }}
+            <div class="form-inline">
+                {{ Form::text('keywords', '', ['type' => 'search', 'class' => 'form-control', 'placeholder' => 'content...']) }}
+                {{ Form::submit('search', ['class' => 'btn']) }}
+            </div>
+            {{ Form::close() }}
         </div>
         </div>
-        <div class="container col-xs-10">
+        <div class="container col-xs-9">
+            @if(Session::has('message'))
+            <div class="panel">
+                {{ session('message') }}
+            </div>
+            @endif
             @yield('content')
         </div>
     </body>

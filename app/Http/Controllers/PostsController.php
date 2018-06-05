@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB;
 use App\Post;
 use Illuminate\Http\Request;
 use App\Http\Requests\validationPost;
+use Debugbar;
 
 class PostsController extends Controller
 {
@@ -13,10 +14,16 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $posts = Post::all()->sortByDesc('created_at');
+        $keywords = $request->get('keywords');
+        //全角スペースを半角スペースに置換、半角スペースごと配列へ分割
+        $keywords = preg_split("/[\s+]+/", str_replace('　', ' ', $keywords));
+        $posts = Post::where(function ($query) use($keywords) {
+            foreach($keywords as $word){
+                $query->where('content', 'like', "%{$word}%");
+            }
+        })->get();
         return view('posts.index', compact('posts'));
     }
 
@@ -40,6 +47,7 @@ class PostsController extends Controller
     public function store(validationPost $request)
     {
         $post = Post::create($request->all());
+        $request->session()->flash('message', '登録しました。');
         return redirect()->route('posts.show', [$post->id]);
     }
 
@@ -75,6 +83,7 @@ class PostsController extends Controller
     public function update(validationPost $request, Post $post)
     {
         $post->update($request->all());
+        $request->session()->flash('message', '更新しました。');
         return redirect()->route('posts.show', [$post->id]);
     }
 
@@ -87,6 +96,6 @@ class PostsController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
-        return redirect()->route('posts.index');
+        return redirect()->route('posts.index')->with('message','削除しました。');
     }
 }
