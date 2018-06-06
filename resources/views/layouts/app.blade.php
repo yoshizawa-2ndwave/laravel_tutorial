@@ -10,7 +10,7 @@
         <div class="container">
             <p>blog</p>
         </div>
-        <div class="col-xs-3">
+        <div class="col-xs-2">
             <div class="sidebar-nav">
                 @section('sidebar')
                 <ul class="nav">
@@ -31,7 +31,7 @@
                 </ul>
             </div>
         </div>
-        <div class="container col-xs-9">
+        <div class="container col-xs-10">
             @if(Session::has('message'))
             <div class="panel">
                 {{ session('message') }}
