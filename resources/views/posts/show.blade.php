@@ -9,8 +9,12 @@
 
 @section('content')
 
-<div >
+<div class="">
     <h1 class="title">{{ $post->title }}</h1>
     <p>{{ $post->content }}</p>
+    <div class="">
+        <p>作成日：{{ $post->created_at }}</p>
+        <p>更新日：{{ $post->updated_at }}</p>
+    </div
 </div>
 @endsection

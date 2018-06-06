@@ -11,20 +11,35 @@ class PostsController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         $keywords = $request->get('keywords');
+        $fromDate = $request->get('fromDate');
+        $toDate = $request->get('toDate');
+        $dateCheck = $request->get('dateCheck');
         //全角スペースを半角スペースに置換、半角スペースごと配列へ分割
-        $keywords = preg_split("/[\s+]+/", str_replace('　', ' ', $keywords));
-        $posts = Post::where(function ($query) use($keywords) {
+        $keywords = preg_split("/[\s+]/", str_replace('　', ' ', $keywords));
+        $posts = Post::where(function ($query) use($keywords, $fromDate, $toDate, $dateCheck) {
             foreach($keywords as $word){
-                $query->where('content', 'like', "%{$word}%");
+                if($word){
+                    $query->where('content', 'like', "%{$word}%");
+                }
             }
-        })->get();
-        return view('posts.index', compact('posts'));
+            if($dateCheck){
+                //日付があればfrom toそれぞれ絞り込み
+                if($fromDate){
+                    $query->whereDate('created_at','>=' ,$fromDate);
+                }
+                if($toDate){
+                    $query->whereDate('created_at', '<=', $toDate);
+                }
+            }
+            $query->paginate(20);
+        })->latest('created_at')->get();
+        return view('posts.index', compact('posts','fromDate', 'toDate'));
     }
 
     /**
