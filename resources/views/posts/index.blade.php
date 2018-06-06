@@ -42,6 +42,7 @@
         <tr>
             <th>タイトル</th>
             <th>作成日時</th>
+            <th>更新日時</th>
             <th>編集</th>
             <th>削除</th>
         </tr>
@@ -49,6 +50,7 @@
         <tr>
             <td>{{ link_to_route('posts.show',$post->title, [$post->id])}}</td>
             <td>{{ $post->created_at->format('Y/m/d H:i') }}</td>
+            <td>{{ $post->updated_at->format('Y/m/d H:i') }}</td>
             <td>{{ link_to_route('posts.edit', '編集', [$post->id])}}</td>
             <td>
                 {{ Form::open( ['route' =>['posts.destroy', $post->id],'onSubmit'=> 'return disp();','method'=>'delete']) }}
@@ -58,5 +60,8 @@
         </tr>
         @endforeach
     </table>
+    <div class="text-center">
+    {{$posts->links() }}
+    </div>
 </div>
 @endsection

@@ -15,6 +15,6 @@ class PostsTableSeeder extends Seeder
         //postsテーブルをtruncate
         DB::table('posts')->truncate();
         //ダミーデータを生成
-        factory(App\Post::class, 10)->create();
+        factory(App\Post::class, 100)->create();
     }
 }
