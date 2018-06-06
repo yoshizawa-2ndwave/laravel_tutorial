@@ -16,12 +16,16 @@ class PostsController extends Controller
      */
     public function index(Request $request)
     {
-        $keywords = $request->get('keywords');
+        $keyword = $request->get('keywords');
         $fromDate = $request->get('fromDate');
         $toDate = $request->get('toDate');
         $dateCheck = $request->get('dateCheck');
         //全角スペースを半角スペースに置換、半角スペースごと配列へ分割
-        $keywords = preg_split("/[\s+]/", str_replace('　', ' ', $keywords));
+        if($keyword){
+            $keywords = preg_split("/[\s+]/", str_replace('　', ' ', $keyword));
+        } else {
+            $keywords = array();
+        }
         $posts = Post::where(function ($query) use($keywords, $fromDate, $toDate, $dateCheck) {
             foreach($keywords as $word){
                 if($word){
@@ -38,7 +42,7 @@ class PostsController extends Controller
                 }
             }
         })->latest('created_at')->paginate(20);
-        return view('posts.index', compact('posts','fromDate', 'toDate'));
+        return view('posts.index', compact('posts','keyword','fromDate', 'toDate'));
     }
 
     /**

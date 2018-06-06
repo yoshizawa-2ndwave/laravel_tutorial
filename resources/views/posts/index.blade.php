@@ -12,7 +12,7 @@
     <div class="form-group">
         <div class="row">
             <div class="col-xs-10">
-                {{ Form::text('keywords', '', ['type' => 'search', 'class' => 'form-control', 'placeholder' => 'content...']) }}
+                {{ Form::text('keywords', $keyword, ['type' => 'search', 'class' => 'form-control', 'placeholder' => 'content...']) }}
             </div>
             <div class="col-xs-2">
                 {{ Form::submit('search', ['class' => 'btn btn-primary col-xs-12']) }}
@@ -61,7 +61,7 @@
         @endforeach
     </table>
     <div class="text-center">
-    {{$posts->links() }}
+    {!!$posts->appends(['keywords'=> $keyword, 'fromDate' => $fromDate, 'toDate' => $toDate])->links() !!}
     </div>
 </div>
 @endsection
