@@ -31,13 +31,15 @@
                 </ul>
             </div>
         </div>
-        <div class="container col-xs-10">
-            @if(Session::has('message'))
-            <div class="panel">
-                {{ session('message') }}
+        <div class="col-xs-10">
+            <div class="container">
+                @if(Session::has('message'))
+                <div class="panel">
+                    {{ session('message') }}
+                </div>
+                @endif
+                @yield('content')
             </div>
-            @endif
-            @yield('content')
         </div>
     </body>
     <script>

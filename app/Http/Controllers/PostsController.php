@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use App\Post;
+use App\Comment;
 use Illuminate\Http\Request;
 use App\Http\Requests\validationPost;
+use Illuminate\Support\MessageBag;
 use Debugbar;
 
 class PostsController extends Controller
@@ -70,7 +72,9 @@ class PostsController extends Controller
      */
     public function show(Post $post)
     {
-        return view('posts.show', compact('post'));
+        $comments = Comment::where('post_id',$post->id)->get();
+        Debugbar::log($comments);
+        return view('posts.show', compact('post','comments'));
     }
 
     /**
@@ -108,5 +112,13 @@ class PostsController extends Controller
     {
         $post->delete();
         return redirect()->route('posts.index')->with('message','削除しました。');
+    }
+
+    public function comment(Request $request)
+    {
+        Comment::create($request->all());
+        $request->session()->flash('message', 'コメントしました。');
+
+        return redirect()->route('posts.show', [$request->input('post_id')]);
     }
 }
