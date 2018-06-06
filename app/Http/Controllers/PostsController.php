@@ -19,27 +19,20 @@ class PostsController extends Controller
         $keyword = $request->get('keywords');
         $fromDate = $request->get('fromDate');
         $toDate = $request->get('toDate');
-        $dateCheck = $request->get('dateCheck');
-        //全角スペースを半角スペースに置換、半角スペースごと配列へ分割
-        if($keyword){
+        $posts = Post::where(function ($query) use($keyword, $fromDate, $toDate) {
+            //全角スペースを半角スペースに置換、半角スペースごと配列へ分割
             $keywords = preg_split("/[\s+]/", str_replace('　', ' ', $keyword));
-        } else {
-            $keywords = array();
-        }
-        $posts = Post::where(function ($query) use($keywords, $fromDate, $toDate, $dateCheck) {
             foreach($keywords as $word){
                 if($word){
                     $query->where('content', 'like', "%{$word}%");
                 }
             }
-            if($dateCheck){
-                //日付があればfrom toそれぞれ絞り込み
-                if($fromDate){
-                    $query->whereDate('created_at','>=' ,$fromDate);
-                }
-                if($toDate){
-                    $query->whereDate('created_at', '<=', $toDate);
-                }
+            //日付があればfrom toそれぞれ絞り込み
+            if($fromDate){
+                $query->whereDate('created_at','>=' ,$fromDate);
+            }
+            if($toDate){
+                $query->whereDate('created_at', '<=', $toDate);
             }
         })->latest('created_at')->paginate(20);
         return view('posts.index', compact('posts','keyword','fromDate', 'toDate'));
