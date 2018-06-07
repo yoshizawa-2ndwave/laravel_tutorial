@@ -20,5 +20,5 @@ Route::group(['middleware' => 'auth'], function () {
 Route::resource('/posts', 'PostsController', ['only' => ['index', 'show']]);
 Auth::routes();
 Route::post('/login', 'Auth\LoginController@authenticate');
-Route::Post('/comment', 'PostsController@comment');
+Route::Post('/posts/comment', 'PostsController@comment')->name('posts.comment');
 Route::get('/home', 'HomeController@index')->name('home');

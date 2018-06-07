@@ -8,7 +8,11 @@
     </head>
     <body>
         <div class="container">
+        @if(Auth::check())
+            <p>{{ Auth::user()->name }}</p>
+        @else
             <p>blog</p>
+        @endif
         </div>
         <div class="col-xs-2">
             <div class="sidebar-nav">
@@ -34,9 +38,7 @@
         <div class="col-xs-10">
             <div class="container">
                 @if(Session::has('message'))
-                <div class="panel">
-                    {{ session('message') }}
-                </div>
+                    <div class="alert alert-info">{{ session('message') }}</div>
                 @endif
                 @yield('content')
             </div>

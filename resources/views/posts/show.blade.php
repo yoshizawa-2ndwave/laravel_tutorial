@@ -8,24 +8,38 @@
 @endsection
 
 @section('content')
-<div class="">
-    <div class="row">
-        <h1 class="title">{{ $post->title }}</h1>
-        <p>{{ $post->content }}</p>
-        <div class="">
-            <p>作成日：{{ $post->created_at->format('Y/m/d H:i') }}</p>
-            <p>更新日：{{ $post->updated_at->format('Y/m/d H:i') }}</p>
+<div class="col-xs-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h5 class="panel-title">{{ $post->title }}</h5>
+        </div>
+        <div class="panel-body">
+            <p>{{ $post->content }}</p>
+        </div>
+        <div class="panel-footer">
+            <p>作成日：{{ $post->created_at->format('Y/m/d H:i') }} 更新日：{{ $post->updated_at->format('Y/m/d H:i') }}</p>
         </div>
     </div>
     <div class="row">
         <h4>コメント</h4>
         <div class="col-xs-6">
             @foreach ($comments as $comment )
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <p>{{ $comment->comment }}</p>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <p class="text-left">No:{{$loop->iteration}}</p>
+                        </div>
+                        <div class="col-xs-11">
+                            <p class="text-right">name:{{ $comment->name }} created_at:{{ $comment->created_at->format('Y/m/d H:i')}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
-                <p>{{$loop->iteration}}</p>
-                <p>comment:{{ $comment->comment }}</p>
-                <p>name:{{ $comment->name }}</p>
-                <p>date:{{ $comment->created_at->format('Y/m/d H:i') }}</p>
             </div>
             @endforeach
         </div>
@@ -41,7 +55,7 @@
                 </ul>
             </div>
             @endif
-            {{ Form::open( ['url' => 'comment'] ) }}
+            {{ Form::open( ['route' => 'posts.comment'] ) }}
             <div class="form-group">
                 {{Form::label('name')}}
                 {{ Form::text('name', '' ,['class' => 'form-control', 'required']) }}
