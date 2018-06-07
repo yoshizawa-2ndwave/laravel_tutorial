@@ -33,7 +33,7 @@
         @endforeach
     </table>
     <div class="text-center">
-    {!!$posts->appends(['keywords'=> $keyword, 'fromDate' => $fromDate, 'toDate' => $toDate])->links() !!}
+    {{ $posts->appends($_GET)->links() }}
     </div>
 </div>
 @endsection

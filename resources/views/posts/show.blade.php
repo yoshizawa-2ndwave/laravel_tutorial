@@ -13,8 +13,8 @@
         <h1 class="title">{{ $post->title }}</h1>
         <p>{{ $post->content }}</p>
         <div class="">
-            <p>作成日：{{ $post->created_at }}</p>
-            <p>更新日：{{ $post->updated_at }}</p>
+            <p>作成日：{{ $post->created_at->format('Y/m/d H:i') }}</p>
+            <p>更新日：{{ $post->updated_at->format('Y/m/d H:i') }}</p>
         </div>
     </div>
     <div class="row">
@@ -25,7 +25,7 @@
                 <p>{{$loop->iteration}}</p>
                 <p>comment:{{ $comment->comment }}</p>
                 <p>name:{{ $comment->name }}</p>
-                <p>date:{{ $comment->created_at }}</p>
+                <p>date:{{ $comment->created_at->format('Y/m/d H:i') }}</p>
             </div>
             @endforeach
         </div>

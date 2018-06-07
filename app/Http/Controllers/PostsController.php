@@ -18,9 +18,10 @@ class PostsController extends Controller
      */
     public function index(Request $request)
     {
-        $keyword = $request->get('keywords');
-        $fromDate = $request->get('fromDate');
-        $toDate = $request->get('toDate');
+        $keyword = $request->query('keywords');
+        $fromDate = $request->query('fromDate');
+        $toDate = $request->query('toDate');
+        $size = $request->query('size');
         $posts = Post::where(function ($query) use($keyword, $fromDate, $toDate) {
             //全角スペースを半角スペースに置換、半角スペースごと配列へ分割
             $keywords = preg_split("/[\s+]/", str_replace('　', ' ', $keyword));
@@ -31,13 +32,13 @@ class PostsController extends Controller
             }
             //日付があればfrom toそれぞれ絞り込み
             if($fromDate){
-                $query->whereDate('created_at','>=' ,$fromDate);
+                $query->whereDate('created_at', '>=', $fromDate);
             }
             if($toDate){
                 $query->whereDate('created_at', '<=', $toDate);
             }
-        })->latest('created_at')->paginate(20);
-        return view('posts.index', compact('posts','keyword','fromDate', 'toDate'));
+        })->latest('created_at')->paginate($size ? $size : 20);
+        return view('posts.index', compact('posts', 'keyword', 'fromDate', 'toDate', 'size'));
     }
 
     /**
@@ -54,7 +55,7 @@ class PostsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  validationPost  $request
+     * @param  validationPost $request
      * @return \Illuminate\Http\Response
      */
     public function store(validationPost $request)
@@ -111,14 +112,19 @@ class PostsController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
+        Comment::where('post_id',$post->id)->delete();
         return redirect()->route('posts.index')->with('message','削除しました。');
     }
 
+    /**
+     * POSTされたコメントを保存する
+     * @param Request $request
+     * @return Response
+     */
     public function comment(Request $request)
     {
         Comment::create($request->all());
         $request->session()->flash('message', 'コメントしました。');
-
         return redirect()->route('posts.show', [$request->input('post_id')]);
     }
 }

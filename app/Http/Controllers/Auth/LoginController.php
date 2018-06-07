@@ -46,8 +46,10 @@ class LoginController extends Controller
     public function authenticate(Request $request){
         $email = $request->email;
         $password = $request->password;
-        if (Auth::validate(['email' => $email, 'password' => $password]) || Auth::validate(['name' => $email, 'password' => $password]))
+        if (Auth::validate(['email' => $email, 'password' => $password])
+        || Auth::validate(['name' => $email, 'password' => $password]))
         {
+            //ログインに成功したらユーザー情報を取得してidをloginUsingIdに渡す
             $user = User::where('email', $email)->orWhere('name', $email)->first();
             Auth::loginUsingId($user->id);
             return redirect('/posts');
